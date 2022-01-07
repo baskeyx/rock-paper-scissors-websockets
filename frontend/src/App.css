@@ -1,9 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
 
-h1 {
+h1, h2 {
   font-family: Bangers;
+  width: 100%;
 }
 
 html {
   text-align: center;
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
