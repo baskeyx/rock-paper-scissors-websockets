@@ -1,10 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import Anchor from '../../Components/Anchor';
 import { WebsocketContext } from '../../Components/Websocket';
 
 const Multiplayer = () => {
-  const [id, setId] = useState('');
   const [games, setGames] = useState([]);
 
   const testing = useContext(WebsocketContext);
@@ -14,13 +12,13 @@ const Multiplayer = () => {
   }
 
   useEffect(() => {
-    if (!localStorage.rps) {
-      const userId = uuidv4();
-      setId(userId);
-      localStorage.rps = userId;
-    } else {
-      setId(localStorage.rps);
-    };
+    // if (!localStorage.rps) {
+    //   const userId = uuidv4();
+    //   setId(userId);
+    //   localStorage.rps = userId;
+    // } else {
+    //   setId(localStorage.rps);
+    // };
   }, []);
   
   return (
