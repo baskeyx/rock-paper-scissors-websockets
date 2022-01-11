@@ -1,37 +1,68 @@
+require('dotenv').config({ path: '../.env' });
 const WebSocketServer = require('ws').Server;
 const mongoose = require('mongoose');
-const wss = new WebSocketServer({ port: 7071 });
 const { v4: uuidv4 } = require('uuid');
+const { game } = require('./models/Game.model');
 
-// mongoose.connect('mongodb+srv://infinitywars:T2Kp2xsSFKt3NZDJ@baskey.lueip.mongodb.net/infinitywars?retryWrites=true&w=majority', {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-//   useFindAndModify: false,
-//   useCreateIndex: true,
-// });
+const wss = new WebSocketServer({ port: 7071 });
 
-// const db = mongoose.connection;
+const mongo = {
+  username: process.env.MONGOUSER,
+  password: process.env.MONGOPWORD,
+  db: process.env.MONGODB,
+}
+
+mongoose.connect(`mongodb+srv://${mongo.username}:${mongo.password}@cluster0.pbyqo.mongodb.net/${mongo.db}?retryWrites=true&w=majority`, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
 
 wss.on('connection', (ws) => {
-  // const uniqueId = uuidv4();
-  // console.log(uniqueId);
-  //ws.send('hello');
   console.log('opened');
-  ws.on('message', (data, isBinary) => {
+  ws.on('message', async (data, isBinary) => {
     const message = isBinary ? data : data.toString();
     const pMessage = JSON.parse(message);
-    if (pMessage.type === 'createGame') {
+    console.log(pMessage);
+    const { type } = pMessage.payload;
 
+    if (type === 'createGame') {
+      const checkGame = await game.find({
+        completed: false,
+        p1: { id: pMessage.id, score: 0 },
+      });
+
+      if (!checkGame.length){
+        const createGame = await game.create({
+          id: uuidv4(),
+          full: 0,
+          p1: {
+            id: pMessage.id,
+          },
+          p2: {
+            id: '',
+          },
+          completed: 0,
+        }); 
+        console.log(createGame);
+      } else {
+        console.log(`Game already exists: ${checkGame[0].id}`)
+      }
+    } else if (type === 'getGames') {
+      const getGames = await game.find({
+        completed: 0,
+        full: 0,
+      });
+      console.log(getGames);
     }
-    console.log(pMessage.id);
-    // ws.send('Hiya')
-    // broadcast(JSON.stringify(pMessage));
+    ws.send(message);
   });
   ws.on("close", () => {
     console.log('closed');
   });
 });
 
-const broadcast = (message) => {
-  wss.clients.forEach((client) => client.send(message));
-};
+// const broadcast = (message) => {
+//   wss.clients.forEach((client) => client.send(message));
+// };

@@ -26,7 +26,6 @@ const Websocket = ({ children }) => {
   }, []);
 
   const sendMessage = (payload) => {
-    console.log(payload);
     client.send(JSON.stringify({
       id,
       payload,

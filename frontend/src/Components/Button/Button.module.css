@@ -1,11 +1,29 @@
-.Button {
-  font-size: 128px;
-  min-width: 200px;
-  min-height: 200px;
+.panel {
+  font-size: 100px;
+  min-width: 170px;
+  min-height: 170px;
   line-height: 1;
   border: 5px solid #222;
   border-radius: 30px;
   background: transparent;
-  margin: 20px;
+  margin: 10px 20px;
   cursor: pointer;
+}
+
+.button {
+  background: #0071e3;
+  color: #fff;
+  font-family: Bangers;
+  font-size: 30px;
+  text-decoration: none;
+  min-width: 200px;
+  border-radius: 8px;
+  padding: 10px 0;
+  margin: 10px 0;
+  border: 1px solid #0071e3;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #0077ed;
 }

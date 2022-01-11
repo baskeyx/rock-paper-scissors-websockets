@@ -24,7 +24,6 @@ const game = mongoose.model('Games', mongoose.Schema({
   p2: {
     id: {
       type: String,
-      required: true,
     },
     score: {
       type: Number,
@@ -42,4 +41,4 @@ const game = mongoose.model('Games', mongoose.Schema({
   }
 }));
 
-export default game;
+exports.game = game;

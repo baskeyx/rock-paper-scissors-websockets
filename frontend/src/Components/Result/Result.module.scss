@@ -1,0 +1,32 @@
+.wrapper {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.playerContainer {
+  background: #0071e3;
+  border-radius: 8px;
+  padding: 10px 0;
+  margin: 10px 0;
+  color: #fff;
+  width: 40%;
+  font-family: Bangers;
+  font-size: 30px;
+}
+
+.choice {
+  font-size: 80px;
+  opacity: 0;
+  transition: ease-in 1s;
+}
+
+.score {
+  padding: 10px 0 0;
+  opacity: 0;
+  transition: ease-in 1s;
+}
+
+.show .choice,
+.show .score {
+  opacity: 1;
+}

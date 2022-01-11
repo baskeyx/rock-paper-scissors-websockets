@@ -5,10 +5,12 @@ import { WebsocketContext } from '../../Components/Websocket';
 const Multiplayer = () => {
   const [games, setGames] = useState([]);
 
-  const testing = useContext(WebsocketContext);
+  const sendPayload = useContext(WebsocketContext);
 
-  const sendPayload = () => {
-    testing('Hiya!');
+  const createGame = () => {
+    sendPayload({
+      type: 'createGame',
+    });
   }
 
   useEffect(() => {
@@ -25,7 +27,7 @@ const Multiplayer = () => {
     <main>
       <h2>Multiplayer</h2>
       <Anchor to='/create'>Create Game</Anchor>
-      <button onClick={sendPayload}>Test</button>
+      <button onClick={createGame}>Test</button>
     </main>
   )
 }

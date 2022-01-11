@@ -1,15 +1,21 @@
 const options = [
   {
-    name: 'Rock',
+    name: 'rock',
+    beats: "scissors",
+    loses: "paper",
     value: '✊',
   },
   {
-    name: 'Paper',
+    name: 'paper',
     value: '✋',
+    beats: "rock",
+    loses: "scissors",
   },
   {
-    name: 'Scissors',
+    name: 'scissors',
     value: '✌',
+    beats: "paper",
+    loses: "rock",
   },
 ];
 
