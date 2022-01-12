@@ -6,15 +6,17 @@ const client = new W3CWebSocket('ws://localhost:7071');
 
 const Websocket = ({ children }) => {
   const [id, setId] = useState('');
+  const [connection, setConnection] = useState(false);
+
   useEffect(() => {
     client.onopen = () => {
-      console.log('WebSocket Client Connected');
+      setConnection(true);
     };
     client.onmessage = (data) => {
       console.log(JSON.parse(data.data));
     };
     client.onclose = () => {
-      console.log('WebSocket Closed');
+      setConnection(false);
     };
     if (!localStorage.rps) {
       const userId = uuidv4();
@@ -34,7 +36,10 @@ const Websocket = ({ children }) => {
 
   return (
     <div>
-      <WebsocketContext.Provider value={sendMessage}>
+      <WebsocketContext.Provider value={{
+        sendMessage,
+        connection,
+      }}>
         {/*<Multiplayer />
         <input value={payload} onChange={(e) => setPayload(e.target.value)} />
         <button onClick={sendMessage}>Test</button>*/}

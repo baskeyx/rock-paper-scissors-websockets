@@ -2,7 +2,7 @@ require('dotenv').config({ path: '../.env' });
 const WebSocketServer = require('ws').Server;
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
-const { game } = require('./models/Game.model');
+const getGames = require('./endpoints/getGames');
 
 const wss = new WebSocketServer({ port: 7071 });
 
@@ -24,7 +24,7 @@ wss.on('connection', (ws) => {
   ws.on('message', async (data, isBinary) => {
     const message = isBinary ? data : data.toString();
     const pMessage = JSON.parse(message);
-    console.log(pMessage);
+    // console.log(pMessage);
     const { type } = pMessage.payload;
 
     if (type === 'createGame') {
@@ -42,7 +42,7 @@ wss.on('connection', (ws) => {
           },
           p2: {
             id: '',
-          },
+          }, 
           completed: 0,
         }); 
         console.log(createGame);
@@ -50,13 +50,10 @@ wss.on('connection', (ws) => {
         console.log(`Game already exists: ${checkGame[0].id}`)
       }
     } else if (type === 'getGames') {
-      const getGames = await game.find({
-        completed: 0,
-        full: 0,
-      });
-      console.log(getGames);
+      const games = await getGames();
+      pMessage.payload.games = games;
     }
-    ws.send(message);
+    ws.send(JSON.stringify(pMessage));
   });
   ws.on("close", () => {
     console.log('closed');

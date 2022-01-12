@@ -5,15 +5,18 @@ import { WebsocketContext } from '../../Components/Websocket';
 const Multiplayer = () => {
   const [games, setGames] = useState([]);
 
-  const sendPayload = useContext(WebsocketContext);
+  const context = useContext(WebsocketContext);
 
   const createGame = () => {
-    sendPayload({
+    context.sendMessage({
       type: 'createGame',
     });
   }
 
   useEffect(() => {
+    context.sendMessage({
+      type: 'getGames',
+    });
     // if (!localStorage.rps) {
     //   const userId = uuidv4();
     //   setId(userId);
