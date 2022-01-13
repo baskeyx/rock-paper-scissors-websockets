@@ -3,6 +3,7 @@ const WebSocketServer = require('ws').Server;
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 const getGames = require('./endpoints/getGames');
+const createGame = require('./endpoints/createGame');
 
 const wss = new WebSocketServer({ port: 7071 });
 
@@ -24,34 +25,14 @@ wss.on('connection', (ws) => {
   ws.on('message', async (data, isBinary) => {
     const message = isBinary ? data : data.toString();
     const pMessage = JSON.parse(message);
-    // console.log(pMessage);
+
+    const { id } = pMessage;
     const { type } = pMessage.payload;
 
     if (type === 'createGame') {
-      const checkGame = await game.find({
-        completed: false,
-        p1: { id: pMessage.id, score: 0 },
-      });
-
-      if (!checkGame.length){
-        const createGame = await game.create({
-          id: uuidv4(),
-          full: 0,
-          p1: {
-            id: pMessage.id,
-          },
-          p2: {
-            id: '',
-          }, 
-          completed: 0,
-        }); 
-        console.log(createGame);
-      } else {
-        console.log(`Game already exists: ${checkGame[0].id}`)
-      }
+      pMessage.payload.response = await createGame(id);
     } else if (type === 'getGames') {
-      const games = await getGames();
-      pMessage.payload.games = games;
+      pMessage.payload.response = await getGames();
     }
     ws.send(JSON.stringify(pMessage));
   });

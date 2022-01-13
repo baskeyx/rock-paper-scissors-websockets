@@ -1,22 +1,20 @@
-import { useState, useEffect, useContext } from 'react';
-import Anchor from '../../Components/Anchor';
+import { useEffect, useContext } from 'react';
 import { WebsocketContext } from '../../Components/Websocket';
+import MultiplayerMenu from '../../Components/MultiplayerMenu';
 
 const Multiplayer = () => {
-  const [games, setGames] = useState([]);
+  const { connection } = useContext(WebsocketContext);
 
-  const context = useContext(WebsocketContext);
-
-  const createGame = () => {
-    context.sendMessage({
-      type: 'createGame',
-    });
-  }
+  // const createGame = () => {
+  //   context.sendMessage({
+  //     type: 'createGame',
+  //   });
+  // }
 
   useEffect(() => {
-    context.sendMessage({
-      type: 'getGames',
-    });
+    // context.sendMessage({
+    //   type: 'getGames',
+    // });
     // if (!localStorage.rps) {
     //   const userId = uuidv4();
     //   setId(userId);
@@ -28,9 +26,7 @@ const Multiplayer = () => {
   
   return (
     <main>
-      <h2>Multiplayer</h2>
-      <Anchor to='/create'>Create Game</Anchor>
-      <button onClick={createGame}>Test</button>
+      {(connection ? <MultiplayerMenu /> : <div>No</div>)}
     </main>
   )
 }
