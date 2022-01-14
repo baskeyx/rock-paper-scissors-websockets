@@ -19,6 +19,6 @@
     "frontend": "cd frontend && yarn start",
     "backend": "nodemon app.js",
     "dev": "concurrently --kill-others-on-fail \"yarn run backend\" \"yarn run frontend\"",
-    "heroku-postbuild": "cd frontend && yarn install && yarn build"
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
   }
 }
