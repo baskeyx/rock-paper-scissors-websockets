@@ -3,7 +3,7 @@ import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import { v4 as uuidv4 } from 'uuid';
 import messageHandler from '../../messageHandler';
 export const WebsocketContext = createContext();
-const client = new W3CWebSocket('wss://localhost:7071');
+const client = new W3CWebSocket('ws://localhost:7071');
 
 const Websocket = ({ children }) => {
   const [id, setId] = useState('');
