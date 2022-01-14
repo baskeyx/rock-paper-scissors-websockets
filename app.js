@@ -6,18 +6,22 @@ const mongoose = require('mongoose');
 const getGames = require('./backend/endpoints/getGames');
 const createGame = require('./backend/endpoints/createGame');
 
-const app = express();
+const environment = process.env.ENVIRONMENT;
 
-app.listen(process.env.PORT || 3000, function(){
-  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-});
-// Serve static files from the React frontend app
-app.use(express.static(path.join(__dirname, './frontend/build')))
+if (environment === 'PROD') {
+  const app = express();
 
-// AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + './frontend/build/index.html'))
-})
+  app.listen(process.env.PORT || 3000, function(){
+    console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+  });
+  // Serve static files from the React frontend app
+  app.use(express.static(path.join(__dirname, 'frontend/build')))
+
+  // AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
+  })
+}
 
 const wss = new WebSocketServer({ port: 7071 });
 
