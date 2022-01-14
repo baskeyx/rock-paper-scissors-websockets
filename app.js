@@ -7,6 +7,10 @@ const getGames = require('./backend/endpoints/getGames');
 const createGame = require('./backend/endpoints/createGame');
 
 const app = express();
+
+app.listen(process.env.PORT || 3000, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+});
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, './frontend/build')))
 
