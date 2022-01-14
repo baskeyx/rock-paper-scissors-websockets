@@ -1,19 +1,21 @@
 import { useState, useEffect, createContext } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import { v4 as uuidv4 } from 'uuid';
+import messageHandler from '../../messageHandler';
 export const WebsocketContext = createContext();
 const client = new W3CWebSocket('ws://localhost:7071');
 
 const Websocket = ({ children }) => {
   const [id, setId] = useState('');
   const [connection, setConnection] = useState(false);
+  const [games, setGames] = useState([]);
 
   useEffect(() => {
     client.onopen = () => {
       setConnection(true);
     };
     client.onmessage = (data) => {
-      console.log(JSON.parse(data.data));
+      messageHandler(JSON.parse(data.data), setGames);
     };
     client.onclose = () => {
       setConnection(false);
@@ -39,6 +41,7 @@ const Websocket = ({ children }) => {
       <WebsocketContext.Provider value={{
         sendMessage,
         connection,
+        games,
       }}>
         {/*<Multiplayer />
         <input value={payload} onChange={(e) => setPayload(e.target.value)} />

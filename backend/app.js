@@ -34,6 +34,7 @@ wss.on('connection', (ws) => {
     } else if (type === 'getGames') {
       pMessage.payload.response = await getGames();
     }
+    console.log(pMessage);
     ws.send(JSON.stringify(pMessage));
   });
   ws.on("close", () => {
